@@ -1,0 +1,133 @@
+PS C:\python\Project1> python Project1a.py
+[ 0.46024722  1.58610069  0.6886058  -7.63369337 -0.33130319 -2.32779491
+ 10.33955665 -7.31540146  6.48171573  3.18825268 -4.7888822  12.56684679
+ -7.72285294  0.17820022 -5.0775696   0.32014405 -5.75410374  2.78000496
+  0.64145342 -0.71527231  2.6060138 ]
+Training R2 for OLS
+0.8920295957445439
+Training MSE for OLS
+0.008903048676219901
+Test R2 for OLS
+0.8568041395103325
+Test MSE OLS
+0.009690468492254061
+PS C:\python\Project1> python Project1b.py
+PS C:\python\Project1> python Project1c.py
+PS C:\python\Project1> python Project1d.py
+(400, 55)
+PS C:\python\Project1> python 1dbootstrap.py
+(400, 36)
+PS C:\python\Project1> python 1dcrossval.py
+(400, 36)
+PS C:\python\Project1> python 1ebootstrap.py
+.
+.
+.
+C:\Users\Viggo\Anaconda3\lib\site-packages\sklearn\linear_model\coordinate_descent.py:492: ConvergenceWarning: Objective
+ did not converge. You might want to increase the number of iterations. Fitting data with very small alpha may cause pre
+cision problems.
+  ConvergenceWarning)
+(80, 1) (80, 1)
+(80, 1) (80, 1)
+(80, 1) (80, 1)
+(80, 1) (80, 1)
+(80, 1) (80, 1)
+(80, 1) (80, 1)
+(80, 1) (80, 1)
+(80, 1) (80, 1)
+(80, 1) (80, 1)
+(80, 1) (80, 1)
+(80, 1) (80, 1)
+PS C:\python\Project1> python 1ecrossval.py
+.
+.
+.
+C:\Users\Viggo\Anaconda3\lib\site-packages\sklearn\linear_model\coordinate_descent.py:492: ConvergenceWarning: Objective did not conv
+erge. You might want to increase the number of iterations. Fitting data with very small alpha may cause precision problems.
+  ConvergenceWarning)
+PS C:\python\Project1> python testa.py
+[ 1296.771875     207.3147459    152.78933078   161.34244222
+ -1370.81922219  -118.81692378  -545.22774726  -428.53405671
+  3267.1924254      6.15702175   411.23278768  1075.70252157
+  -220.55273588 -3064.43335126   -24.6730314    -76.75701115
+  -252.37527959  -524.43314134   457.88313336   939.27054956
+     0.        ]
+Training R2 for OLS
+0.8935665901206256
+Training MSE for OLS
+515.8186204946189
+Test R2 for OLS
+0.8974179954709375
+Test MSE OLS
+511.8201503963942
+PS C:\python\Project1> python testb.py
+5
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+PS C:\python\Project1> python testc.py
+PS C:\python\Project1> python testdboot.py
+PS C:\python\Project1> python testdcross.py
+(400, 36)
+PS C:\python\Project1> python testeboot.py
+[[0.27700831 0.27700831 0.27700831 ... 1.         1.         1.        ]
+ [0.01108033 0.06094183 0.33518006 ... 1.         1.         1.        ]
+ [0.89750693 0.64819945 0.46814404 ... 1.         1.         1.        ]
+ ...
+ [0.06925208 0.11080332 0.17728532 ... 1.         1.         1.        ]
+ [0.02493075 0.14127424 0.80055402 ... 1.         1.         1.        ]
+ [0.80055402 0.84764543 0.89750693 ... 1.         1.         1.        ]]
+(400, 36)
+C:\Users\Viggo\Anaconda3\lib\site-packages\sklearn\linear_model\coordinate_descent.py:492: ConvergenceWarning: Objective did not conv
+erge. You might want to increase the number of iterations. Fitting data with very small alpha may cause precision problems.
+  ConvergenceWarning)
+(80,) (80,)
+C:\Users\Viggo\Anaconda3\lib\site-packages\sklearn\linear_model\coordinate_descent.py:492: ConvergenceWarning: Objective did not conv
+erge. You might want to increase the number of iterations. Fitting data with very small alpha may cause precision problems.
+  ConvergenceWarning)
+(80,) (80,)
+C:\Users\Viggo\Anaconda3\lib\site-packages\sklearn\linear_model\coordinate_descent.py:492: ConvergenceWarning: Objective did not conv
+erge. You might want to increase the number of iterations. Fitting data with very small alpha may cause precision problems.
+  ConvergenceWarning)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+(80,) (80,)
+PS C:\python\Project1> python testecross.py
+.
+.
+.
+C:\Users\Viggo\Anaconda3\lib\site-packages\sklearn\linear_model\coordinate_descent.py:492: ConvergenceWarning: Objective did not converge.
+ight want to increase the number of iterations. Fitting data with very small alpha may cause precision problems.
+  ConvergenceWarning)
