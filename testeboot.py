@@ -48,10 +48,6 @@ x_mesh, y_mesh = np.meshgrid(x,y)
 # Note the use of meshgrid
 z = terrain1.ravel() #height
 
-#legger til normalfordelt støy til funksjonen
-sigma2 = 0.3
-#z = (z + sigma2*np.random.normal(0,1, len(x_mesh))).reshape(-1,1)
-#z = (FrankeFunction(x, y) + sigma2*np.random.normal(0,1, len(x))).reshape(-1,1)
 
 
 def R2(y_data, y_model):
@@ -78,7 +74,7 @@ MSEPredictLasso = np.zeros(nlambdas)
 MSETrainLasso = np.zeros(nlambdas)
 lambdas = np.logspace(-3, 0, nlambdas)
 testsize = 0.2
-bootstraps = 100
+bootstraps = 200
 
 bias = []
 var = []
@@ -117,6 +113,7 @@ for i in range(nlambdas):
 
 
 plt.figure()
+plt.title('Lasso regression with bootstraps')
 plt.plot(np.log10(lambdas), MSETrainLasso, label = 'MSE Lasso train')
 plt.plot(np.log10(lambdas), MSEPredictLasso, 'r--', label = 'MSE Lasso Test')
 plt.xlabel('log10(lambda)')
@@ -126,6 +123,7 @@ plt.show()
 
 
 fig = plt.figure()
+plt.title('Bias variance trade-off, Lasso regression, bootstrap method')
 plt.xlabel('log10(lambda)')
 plt.ylabel('Prediction Error')
 plt.loglog(lambdas, bias, label='bias')

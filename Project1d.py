@@ -25,7 +25,7 @@ def FrankeFunction(x,y):
     term4 = -0.2*np.exp(-(9*x-4)**2 - (9*y-7)**2)
     return term1 + term2 + term3 + term4
 
-#legger til normalfordelt støy til funksjonen
+#adding normalized noise to the Franke function
 sigma2 = 0.5
 z = (FrankeFunction(x, y) + np.random.normal(0,sigma2, len(x))).reshape(-1,1)
 
@@ -60,10 +60,6 @@ scaler.fit(X_train)
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 
-#ikke med i ridge
-#X_train[:,0] = 1
-#X_test[:,0] = 1
-
 print(X.shape)
 I = np.eye(X.shape[1],X.shape[1])
 nlambdas = 20
@@ -80,7 +76,7 @@ for i in range(nlambdas):
     zpredictRidge = X_test @ Ridgebeta + B0 #+intercept
     MSEPredict[i] = MSE(z_test,zpredictRidge)
     MSETrain[i] = MSE(z_train,ztildeRidge)
-# Now plot the results
+
 plt.figure()
 plt.plot(np.log10(lambdas), MSETrain, label = 'MSE Ridge train')
 plt.plot(np.log10(lambdas), MSEPredict, 'r--', label = 'MSE Ridge Test')
@@ -88,57 +84,3 @@ plt.xlabel('log10(lambda)')
 plt.ylabel('MSE')
 plt.legend()
 plt.show()
-
-
-
-
-
-
-
-
-
-
-'''
-k = 5
-kfold = KFold(n_splits = k)
-
-degrees = [i for i in range(21)]
-estimated_MSE_KFold = np.zeros(len(degrees))
-
-
-for j in degrees:
-
-    MSE_test_CV = np.zeros(k)
-    X = create_X(x, y, n=j)
-    X_train, X_test, z_train, z_test = train_test_split(X, z, test_size=0.2)
-    scaler = StandardScaler()
-    scaler.fit(X_train)
-    X_train_scaled = scaler.transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
-
-
-    #without sklearn
-    i = 0
-    for train_inds, test_inds in kfold.split(X_train_scaled):
-        x_cv_train = X_train_scaled[train_inds]
-        z_cv_train = z_train[train_inds]
-
-        x_val = X_train_scaled[test_inds]
-        z_val = z_train[test_inds]
-
-        beta = np.linalg.pinv(x_cv_train.T @ x_cv_train) @ x_cv_train.T @ z_cv_train
-        ztilde = x_cv_train @ beta
-        MSE_train_CV = MSE(z_cv_train,ztilde)
-        zpredict = x_val @ beta
-        MSE_test_CV[i] = MSE(z_val,zpredict)
-        i += 1
-
-    estimated_MSE_KFold[j] = np.mean(MSE_test_CV)
-
-fig = plt.figure()
-plt.xlabel('Model Complexity')
-plt.ylabel('Prediction Error')
-plt.plot(degrees, estimated_MSE_KFold, label='estimated_MSE_KFold')
-plt.legend()
-plt.show()
-'''

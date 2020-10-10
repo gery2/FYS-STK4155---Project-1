@@ -11,7 +11,7 @@ from sklearn.utils import resample
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LinearRegression
 from imageio import imread
-np.random.seed(15)
+np.random.seed(130)
 
 def R2(y_data, y_model):
     return 1 - np.sum((y_data - y_model) ** 2) / np.sum((y_data - np.mean(y_data)) ** 2)
@@ -39,7 +39,7 @@ def create_X(x, y, n ):
 
         return X
 
-N = 1000
+N = 20
 m = 5 # polynomial order
 terrain1 = terrain1[:N,:N]
 
@@ -91,6 +91,7 @@ for j in degrees:
     estimated_MSE_KFold[j] = np.mean(MSE_test_CV)
 
 fig = plt.figure()
+plt.title('K-fold cross-validation')
 plt.xlabel('Model Complexity')
 plt.ylabel('Test Error')
 #plt.plot(degrees, scores_mean, label='sklearn')

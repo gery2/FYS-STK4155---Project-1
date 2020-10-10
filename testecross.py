@@ -13,7 +13,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import Lasso, Ridge
 from imageio import imread
 
-seed(123)
+seed(130)
 # Load the terrain
 terrain1 = imread('SRTM_data_Norway_1.tif')
 
@@ -39,9 +39,7 @@ def create_X(x, y, n ,intercept=True):
 N = 50
 m = 7 # polynomial order
 terrain1 = terrain1[::N,::N]
-'''
-prøv ulike mangder med punkter, ulik polynomgrad, lamda og se om en finner et mønster
-'''
+
 
 # Creates mesh of image pixels
 x = np.linspace(0,1, np.shape(terrain1)[0])
@@ -50,10 +48,6 @@ x_mesh, y_mesh = np.meshgrid(x,y)
 # Note the use of meshgrid
 z = terrain1.ravel() #height
 
-#legger til normalfordelt støy til funksjonen
-sigma2 = 0.3
-#z = (z + sigma2*np.random.normal(0,1, len(x_mesh))).reshape(-1,1)
-#z = (FrankeFunction(x, y) + sigma2*np.random.normal(0,1, len(x))).reshape(-1,1)
 X = create_X(x_mesh, y_mesh,m)
 
 
@@ -86,9 +80,6 @@ estimated_MSE_KFold = np.zeros(nlambdas)
 MSE_test_CV = np.zeros(k)
 clf = Lasso(fit_intercept=True)
 
-#ikke med i ridge
-#X_train[:,0] = 1
-#X_test[:,0] = 1
 
 for i in range(nlambdas):
     lmb = lambdas[i]
@@ -120,6 +111,7 @@ for i in range(nlambdas):
 
 
 fig = plt.figure()
+plt.title('Lasso regression with k-fold cross-validation')
 plt.xlabel('log10(lambda)')
 plt.ylabel('Test Error')
 plt.plot(np.log10(lambdas), estimated_MSE_KFold, label='estimated_MSE_KFold')

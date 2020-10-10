@@ -12,7 +12,7 @@ from sklearn.utils import resample
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LinearRegression
 
-np.random.seed(140)
+seed(140)
 # Make data.
 x = np.arange(0, 1, 0.05)
 y = np.arange(0, 1, 0.05)
@@ -25,7 +25,7 @@ def FrankeFunction(x,y):
     term4 = -0.2*np.exp(-(9*x-4)**2 - (9*y-7)**2)
     return term1 + term2 + term3 + term4
 
-#legger til normalfordelt støy til funksjonen
+#adding normalized noise to the Franke function
 sigma2 = 0.3
 z = (FrankeFunction(x, y) + np.random.normal(0,sigma2, len(x))).reshape(-1,1)
 
@@ -66,18 +66,13 @@ X_test_scaled[:,0] = 1
 print(X.shape)
 I = np.eye(X.shape[1],X.shape[1])
 nlambdas = 20
-lambdas = np.logspace(-10, 1, nlambdas)
+lambdas = np.logspace(-9, -1, nlambdas)
 
 k = 5
 kfold = KFold(n_splits = k)
 estimated_MSE_KFold = np.zeros(nlambdas)
 
 MSE_test_CV = np.zeros(k)
-
-
-#ikke med i ridge
-#X_train[:,0] = 1
-#X_test[:,0] = 1
 
 for i in range(nlambdas):
     lmb = lambdas[i]
@@ -102,14 +97,9 @@ for i in range(nlambdas):
 
 
 fig = plt.figure()
+plt.title('Ridge regression with k-fold cross-validation')
 plt.xlabel('log10(lambda)')
 plt.ylabel('Test Error')
 plt.plot(np.log10(lambdas), estimated_MSE_KFold, label='estimated_MSE_KFold')
 plt.legend()
 plt.show()
-
-'''
-Det som er lurt å notere seg her er at vi kun estimerer MSE for ett forsøk/datasett om gangen
-og med seed så vil vi få det samme datasettet hver gang. det hadde vært mye bedre å ta
-gjennomsnittet mellom mange ulike forsøk/datasett og plotte det i stedet
-'''

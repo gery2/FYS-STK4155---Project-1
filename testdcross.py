@@ -13,7 +13,7 @@ from sklearn.utils import resample
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LinearRegression
 from imageio import imread
-np.random.seed(140)
+np.random.seed(130)
 
 # Load the terrain
 terrain1 = imread('SRTM_data_Norway_1.tif')
@@ -38,8 +38,8 @@ def create_X(x, y, n ,intercept=True):
 
 
 # just fixing a set of points
-N = 15
-m = 5 # polynomial order
+N = 20
+m = 7 # polynomial order
 terrain1 = terrain1[:N,:N]
 
 # Creates mesh of image pixels
@@ -49,10 +49,7 @@ x_mesh, y_mesh = np.meshgrid(x,y)
 # Note the use of meshgrid
 z = terrain1.ravel() #height
 
-#legger til normalfordelt støy til funksjonen
-sigma2 = 0.3
-#z = (z + sigma2*np.random.normal(0,1, len(x_mesh))).reshape(-1,1)
-#z = (FrankeFunction(x, y) + sigma2*np.random.normal(0,1, len(x))).reshape(-1,1)
+
 X = create_X(x_mesh, y_mesh,m)
 
 
@@ -75,18 +72,13 @@ X_test_scaled[:,0] = 1
 print(X.shape)
 I = np.eye(X.shape[1],X.shape[1])
 nlambdas = 20
-lambdas = np.logspace(-10, 1, nlambdas)
+lambdas = np.logspace(-4, 0, nlambdas)
 
 k = 5
 kfold = KFold(n_splits = k)
 estimated_MSE_KFold = np.zeros(nlambdas)
 
 MSE_test_CV = np.zeros(k)
-
-
-#ikke med i ridge
-#X_train[:,0] = 1
-#X_test[:,0] = 1
 
 for i in range(nlambdas):
     lmb = lambdas[i]
@@ -111,6 +103,7 @@ for i in range(nlambdas):
 
 
 fig = plt.figure()
+plt.title('Ridge regression with k-fold cross-validation')
 plt.xlabel('log10(lambda)')
 plt.ylabel('Prediction Error')
 plt.plot(np.log10(lambdas), estimated_MSE_KFold, label='estimated_MSE_KFold')

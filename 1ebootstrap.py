@@ -13,7 +13,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import Lasso, Ridge
 from sklearn.linear_model import LinearRegression
 
-np.random.seed(777)
+np.random.seed(130)
 # Make data.
 x = np.arange(0, 1, 0.05)
 y = np.arange(0, 1, 0.05)
@@ -26,7 +26,7 @@ def FrankeFunction(x,y):
     term4 = -0.2*np.exp(-(9*x-4)**2 - (9*y-7)**2)
     return term1 + term2 + term3 + term4
 
-#legger til normalfordelt støy til funksjonen
+#adding normalized noise to the Franke function
 sigma2 = 0.3
 z = (FrankeFunction(x, y) + sigma2*np.random.normal(0,1, len(x))).reshape(-1,1)
 
@@ -67,7 +67,7 @@ MSEPredictLasso = np.zeros(nlambdas)
 MSETrainLasso = np.zeros(nlambdas)
 lambdas = np.logspace(-4, -1, nlambdas)
 testsize = 0.2
-bootstraps = 100
+bootstraps = 200
 
 bias = []
 var = []
@@ -81,8 +81,6 @@ for i in range(nlambdas):
     clf.fit(X_train, z_train)
     z_fit = clf.predict(X_train).reshape(-1,1)
     z_pred = clf.predict(X_test).reshape(-1,1)
-
-    #print(clf.score(X_train,z_train))
 
     MSEPredictLasso[i] = MSE(z_test,z_pred)
     MSETrainLasso[i] = MSE(z_train,z_fit)
@@ -104,8 +102,8 @@ for i in range(nlambdas):
     var.append(np.mean( np.var(z_Lasso_boot, axis=1, keepdims=True) ))
     print(z_test.shape, (np.mean(z_Lasso_boot, axis=1, keepdims=True)).shape)
 
-
 plt.figure()
+plt.title('Lasso regression with bootstraps')
 plt.plot(np.log10(lambdas), MSETrainLasso, label = 'MSE Lasso train')
 plt.plot(np.log10(lambdas), MSEPredictLasso, 'r--', label = 'MSE Lasso Test')
 plt.xlabel('log10(lambda)')
@@ -113,8 +111,8 @@ plt.ylabel('MSE')
 plt.legend()
 plt.show()
 
-
 fig = plt.figure()
+plt.title('Bias variance trade-off, Lasso regression, bootstrap method')
 plt.xlabel('log10(lambda)')
 plt.ylabel('Prediction Error')
 plt.loglog(lambdas, bias, label='bias')

@@ -11,10 +11,10 @@ from sklearn.utils import resample
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LinearRegression
 
-np.random.seed(15)
+np.random.seed(200)
 # Make data.
-x = np.arange(0, 1, 0.05)
-y = np.arange(0, 1, 0.05)
+x = np.arange(0, 1, 0.01)
+y = np.arange(0, 1, 0.01)
 x, y = np.meshgrid(x,y)
 
 def FrankeFunction(x,y):
@@ -24,7 +24,7 @@ def FrankeFunction(x,y):
     term4 = -0.2*np.exp(-(9*x-4)**2 - (9*y-7)**2)
     return term1 + term2 + term3 + term4
 
-#legger til normalfordelt støy til funksjonen
+#adding normalized noise to the Franke function
 sigma2 = 0.3
 z = (FrankeFunction(x, y) + np.random.normal(0,sigma2, len(x))).reshape(-1,1)
 
@@ -56,9 +56,7 @@ kfold = KFold(n_splits = k)
 
 degrees = [i for i in range(21)]
 estimated_MSE_KFold = np.zeros(len(degrees))
-'''
-scores_mean = np.zeros(len(degrees))
-'''
+
 for j in degrees:
 
     MSE_test_CV = np.zeros(k)
@@ -90,6 +88,7 @@ for j in degrees:
     estimated_MSE_KFold[j] = np.mean(MSE_test_CV)
 
 fig = plt.figure()
+plt.title('K-fold cross-validation')
 plt.xlabel('Model Complexity')
 plt.ylabel('Prediction Error')
 #plt.plot(degrees, scores_mean, label='sklearn')

@@ -10,7 +10,7 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from random import random, seed
 from sklearn.preprocessing import StandardScaler
 
-seed(101)
+seed(200)
 fig = plt.figure()
 ax = fig.gca(projection='3d')
 
@@ -35,7 +35,7 @@ def create_X(x, y, n ):
         return X
 
 # just fixing a set of points
-N = 1000
+N = 100
 m = 5 # polynomial order
 terrain1 = terrain1[:N,:N]
 
@@ -96,12 +96,3 @@ print("Test R2 for OLS")
 print(R2(z_test,ypredictOLS))
 print("Test MSE OLS")
 print(MSE(z_test,ypredictOLS))
-
-
-# Show the terrain
-plt.figure()
-plt.title('Terrain over Norway 1')
-plt.imshow(terrain1, cmap='gray')
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.show()

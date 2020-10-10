@@ -12,7 +12,6 @@ from sklearn.utils import resample
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LinearRegression, Ridge
 
-#np.random.seed(130)
 # Make data.
 x = np.arange(0, 1, 0.05)
 y = np.arange(0, 1, 0.05)
@@ -25,7 +24,7 @@ def FrankeFunction(x,y):
     term4 = -0.2*np.exp(-(9*x-4)**2 - (9*y-7)**2)
     return term1 + term2 + term3 + term4
 
-#legger til normalfordelt støy til funksjonen
+#adding normalized noise to the Franke function
 sigma2 = 0.3
 z = (FrankeFunction(x, y) + np.random.normal(0,sigma2, len(x))).reshape(-1,1)
 
@@ -60,10 +59,6 @@ scaler.fit(X_train)
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 
-#ikke med i ridge
-#X_train[:,0] = 1
-#X_test[:,0] = 1
-
 print(X.shape)
 I = np.eye(X.shape[1],X.shape[1]) #same row and column dimensions
 nlambdas = 20
@@ -71,9 +66,9 @@ MSEPredict = np.zeros(nlambdas)
 MSETrain = np.zeros(nlambdas)
 MSEPredict2 = np.zeros(nlambdas)
 MSETrain2 = np.zeros(nlambdas)
-lambdas = np.logspace(-3, 1, nlambdas)
+lambdas = np.logspace(-5, 1, nlambdas)
 testsize = 0.2
-bootstraps = 1000
+bootstraps = 200
 bias = []
 var = []
 z_Ridge_boot = np.empty((int(z.shape[0]*testsize), bootstraps))
@@ -105,15 +100,12 @@ for i in range(nlambdas):
         R_beta0 = np.mean(z_)
         # Evaluate the new model on the same test data each time.
         z_Ridge_boot[:, j] = (X_test @ R_beta + R_beta0).ravel()
-        #ymod = X_test @ Ridgebeta
 
-    #error = np.mean( np.mean((z_train - ztildeOLS)**2, axis=1, keepdims=True) ) #MSE
     bias.append(np.mean( (z_test - np.mean(z_Ridge_boot, axis=1, keepdims=True))**2 ))
     var.append(np.mean( np.var(z_Ridge_boot, axis=1, keepdims=True) ))
 
-
-# Now plot the results
 plt.figure()
+plt.title('Ridge regression with bootstraps')
 plt.plot(np.log10(lambdas), MSETrain, label = 'MSE Ridge train')
 plt.plot(np.log10(lambdas), MSEPredict, 'r--', label = 'MSE Ridge Test')
 plt.xlabel('log10(lambda)')
@@ -122,6 +114,7 @@ plt.legend()
 plt.show()
 
 plt.figure()
+plt.title("sklearn's Ridge regression with bootstraps")
 plt.plot(np.log10(lambdas), MSETrain2, label = 'MSE Ridge train')
 plt.plot(np.log10(lambdas), MSEPredict2, 'r--', label = 'MSE Ridge Test')
 plt.xlabel('log10(lambda)')
@@ -130,6 +123,7 @@ plt.legend()
 plt.show()
 
 fig = plt.figure()
+plt.title('Bias variance trade-off, Ridge regression, bootstrap method')
 plt.xlabel('log10(lambda)')
 plt.ylabel('Prediction Error')
 plt.plot(np.log10(lambdas), bias, label='bias')

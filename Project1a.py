@@ -8,7 +8,7 @@ from random import random, seed
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
 from sklearn.model_selection import train_test_split
-#import os
+
 seed(101)
 fig = plt.figure()
 ax = fig.gca(projection='3d')
@@ -25,8 +25,8 @@ def FrankeFunction(x,y):
     term4 = -0.2*np.exp(-(9*x-4)**2 - (9*y-7)**2)
     return term1 + term2 + term3 + term4
 
-#legger til normalfordelt støy til funksjonen
-sigma2 = 0.01
+#adding normalized noise to the Franke function
+sigma2 = 0.1
 z = FrankeFunction(x, y) + np.random.normal(0,sigma2, len(x))
 
 # Plot the surface.

@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
 from imageio import imread
 
-seed(123)
+#seed(130)
 # Load the terrain
 terrain1 = imread('SRTM_data_Norway_1.tif')
 
@@ -34,7 +34,7 @@ def create_X(x, y, n ):
     return X
 
 # just fixing a set of points
-N = 20
+N = 100
 m = 5 # polynomial order
 terrain1 = terrain1[:N,:N]
 
@@ -45,10 +45,6 @@ x_mesh, y_mesh = np.meshgrid(x,y)
 # Note the use of meshgrid
 z = terrain1.ravel() #height
 
-#legger til normalfordelt støy til funksjonen
-#sigma2 = 0.3
-#z = (z + sigma2*np.random.normal(0,1, len(z))).reshape(-1,1)
-
 X = create_X(x_mesh, y_mesh,m)
 
 def R2(y_data, y_model):
@@ -58,10 +54,9 @@ def MSE(y_data,y_model):
     return np.sum((y_data-y_model)**2)/n
 
 degrees = [i for i in range(20)]
-print(degrees)
 MSE_train = np.zeros(len(degrees)); MSE_test = np.zeros(len(degrees))
 testsize = 0.2
-bootstraps = 100
+bootstraps = 200
 bias = []
 var = []
 ztildeOLS = np.empty((int(z.shape[0]*testsize), bootstraps))
@@ -91,24 +86,24 @@ for j in degrees:
         # Evaluate the new model on the same test data each time.
 
         ztildeOLS[:, i] = (X_test @ OLSbeta).ravel()
-        #ymod = X_test @ OLSbeta
 
-    #error = np.mean( np.mean((z_train - ztildeOLS)**2, axis=1, keepdims=True) ) #MSE
     bias.append(np.mean( (z_test - np.mean(ztildeOLS, axis=1, keepdims=True))**2 ))
     var.append(np.mean( np.var(ztildeOLS, axis=1, keepdims=True) ))
 
 fig = plt.figure()
+plt.title('Bias-variance trade-off')
 plt.xlabel('Model Complexity')
-plt.ylabel('Prediction Error')
-plt.plot(degrees, bias, label='bias')
-plt.plot(degrees, var, label='variance')
+plt.ylabel('Prediction Error (log10)')
+plt.plot(degrees, np.log10(bias), label='bias')
+plt.plot(degrees, np.log10(var), label='variance')
 plt.legend()
 plt.show()
 
 fig = plt.figure()
+plt.title('Test and training MSEs')
 plt.xlabel('Model Complexity')
-plt.ylabel('Prediction Error')
-plt.plot(degrees, MSE_test, label='MSE_test')
-plt.plot(degrees, MSE_train, label='MSE_train')
+plt.ylabel('Prediction Error (log10)')
+plt.plot(degrees, np.log(MSE_test), label='MSE_test')
+plt.plot(degrees, np.log10(MSE_train), label='MSE_train')
 plt.legend()
 plt.show()
